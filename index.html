@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator Application</title>
+    <style>
+      *{border: solid red 1px;}
+     
+    </style>
+</head>
+
+<body>
+    
+  <div id="calcContainer" style="display:flex; margin:auto;">
+    <div id="displayContainer">
+      <div id="display"></div>
+    </div>
+    <div id="buttonsContainer">
+      <div id="numContainer">
+        <button class="numbers">9</button>
+        <button class="numbers">8</button>
+        <button class="numbers">7</button>
+        <button class="numbers">6</button>
+        <button class="numbers">5</button>
+        <button class="numbers">4</button>
+        <button class="numbers">3</button>
+        <button class="numbers">2</button>
+        <button class="numbers">1</button>
+        <button class="operators">C</button>
+        <button class="numbers">0</button>
+        <button class="operators">=</button>
+        </div>
+        <div id="operatorDiv">
+          <button class="operators" >0^</button>
+          <button class="operators">/</button>
+          <button class="operators">x</button>
+          <button class="operators">-</button>
+          <button class="operators">+</button>
+          
+        </div>
+    </div>
+    </div>
+  
+
+<script>
+
+const calcContainer = document.getElementById('calcContainer');
+const displayContainer= document.getElementById('displayContainer');
+const display = document.getElementById('display');
+
+const buttonsContainer = document.getElementById('buttonsContainer');
+  const numberContainer = document.getElementById('numContainer');
+    const numButtons = document.getElementsByClassName('numbers');
+
+  const operandContainer = document.getElementById('operatorDiv')
+    const operandButtons = document.getElementsByClassName('operators');
+
+
+
+calcContainer.style.display ='flex';
+calcContainer.style.flexDirection = 'column';
+
+displayContainer.style.margin = 'auto';
+displayContainer.style.height = '85px';
+
+
+display.style.display = 'inline-flex';
+display.style.flexWrap = 'wrap';
+display.style.alignItems = 'flex-end';
+display.style.margin = 'auto';
+display.style.width = '600px';
+display.style.height = '75px';
+display.style.padding = '5px 10px';
+display.style.fontSize = '36px';
+display.style.justifyContent = 'right'
+display.style.alignContent = 'right';
+display.style.backgroundColor = '#efefef';
+
+buttonsContainer.style.display = 'flex';
+buttonsContainer.style.width = '525px';
+buttonsContainer.style.padding = '10px 0px';
+buttonsContainer.style.margin = '40px auto';
+buttonsContainer.style.justifyContent = 'center';
+
+
+///Numbers Container
+numberContainer.style.display = 'inline-flex';
+numberContainer.style.flexWrap = 'wrap';
+numberContainer.style.justifyContent = 'center';
+numberContainer.style.gap = '10px';
+numberContainer.style.flexDirection = 'row';
+numberContainer.style.alignItems = 'center';
+numberContainer.style.width = '300px';
+
+  for (let i = 0; i < numButtons.length; i++) {
+    const button = numButtons[i];
+    button.style.width = '75px';
+    button.style.height = '75px';
+    button.style.fontSize = '30px';
+    
+  };
+
+///Operators Container
+operandContainer.style.display = 'flex';
+operandContainer.style.flexDirection = 'column-reverse';
+operandContainer.style.justifyContent = 'flex-end';
+operandContainer.style.alignItems = 'flex-start';
+operandContainer.style.gap = '10px';
+operandContainer.style.width = '150px';
+  //Button creation
+  for (let i = 0; i < operandButtons.length; i++) {
+    const button = operandButtons[i];
+    button.style.width = '59px';
+    button.style.height = '59px';
+    button.style.fontSize= '30px';
+    button.style.margin = 'auto 10px';
+        
+  };
+  
+
+const operatorButton = function () {
+  for (let i = 0; i < operandButtons.length; i++ ) {
+    const button = operandButtons[i];
+    button.addEventListener('click', function () {
+      console.log(button.textContent);
+      console.log(display.textContent);
+    })
+    
+    
+  }
+};
+operatorButton();
+
+/// Selected Buttons displayed
+const displayButtonNumbers = function () {
+ 
+  display.textContent = '';
+    for (let i = 0; i < numButtons.length; i++) {
+      const button = numButtons[i];
+      button.addEventListener('click', function () {
+        display.append(button.textContent);
+       
+       
+      })
+      
+    }
+    
+};
+displayButtonNumbers();
+
+
+
+
+//Number and operators variable
+let firstNum = 0;
+let secondNum = 0;
+const calcOperator = ['+', '-', '/', '*'];
+
+const operate = function (operator, num1, num2) {
+  switch(operator) {
+    case '+':
+      return add([num1,num2]);
+    case '-':
+      return subtract(num1,num2);
+    case '*':
+      return multiply([num1,num2]);
+    case '/':
+      return divide(num1,num2);
+    case '**':
+      return power(num1,num2);
+    default:
+      return 'Invalid operator';
+  }
+};
+
+//Addition  
+const add = function (arr) {
+  let num1 = arr.num1;
+  let num2 = arr.num2;
+  const added = arr.reduce((num1,num2 => num1 = num2));
+  return added;
+}
+
+//subtraction
+const subtract = function(num1, num2) {
+  if (num1 < num2){
+    [num1, num2] = [num2, num1]
+  }
+	return num1 - num2;
+};
+
+/// Division
+const divide = function(num1, num2) {
+  if(num2 !== 0) {
+        const answer = Math.floor(num1 / num2);
+        let remainder = '.' + num1 % num2;
+          if(remainder === '.'+0) {
+            remainder = '';
+          }
+        return `${answer}${remainder}`;
+      }else{
+        return 'Division by zero is not allowed';
+      }
+};
+
+// //Sum of numbers in array
+// const sum = function(arr) {
+// 	let totalSum = 0;
+//   for (let i = 0; i < arr.length; i++) {
+//     if (typeof arr[i] === 'number'){
+//     totalSum += arr[i]
+//     }
+//   }
+  
+//   return {length: arr.length, sum: totalSum};
+// };
+//Mutiplication
+
+const multiply = function(arr) {
+const multiplied = arr.reduce((num1, num2) => num1 * num2 );
+return  multiplied;
+};
+
+const power = function(num1, num2) {
+	return Math.floor(num1 ** num2);
+};
+
+// const factorial = function fac(n) {
+//   return n < 2 ? 1 : n * fac(n - 1);
+// };
+
+// Do not edit below this line
+module.exports = {
+  add,
+  subtract,
+  sum,
+  multiply,
+  power,
+  // factorial
+};
+
+    </script>    
+</body>
+</html>
