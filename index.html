@@ -14,6 +14,7 @@
     
   <div id="calcContainer" style="display:flex; margin:auto;">
     <div id="displayContainer">
+      <div id="displayCalc"></div>
       <div id="display"></div>
     </div>
     <div id="buttonsContainer">
@@ -32,11 +33,12 @@
         <button class="operators">=</button>
         </div>
         <div id="operatorDiv">
-          <button class="operators" >0^</button>
+          <button class="operators" >^</button>
           <button class="operators">/</button>
-          <button class="operators">x</button>
+          <button class="operators">*</button>
           <button class="operators">-</button>
           <button class="operators">+</button>
+          <button class="numbers">.</button>
           
         </div>
     </div>
@@ -44,26 +46,44 @@
   
 
 <script>
-
+//DOM Objects
 const calcContainer = document.getElementById('calcContainer');
 const displayContainer= document.getElementById('displayContainer');
+const displayCalc = document.getElementById('displayCalc');
 const display = document.getElementById('display');
-
 const buttonsContainer = document.getElementById('buttonsContainer');
   const numberContainer = document.getElementById('numContainer');
     const numButtons = document.getElementsByClassName('numbers');
-
   const operandContainer = document.getElementById('operatorDiv')
     const operandButtons = document.getElementsByClassName('operators');
 
+//Number and operators variable
+let firstNum = 0;
+let secondNum = 0;
+let calcOperator = '';
+let operatorChoice;
+console.log(operatorChoice);
 
-
+///Dom Objects Style
 calcContainer.style.display ='flex';
 calcContainer.style.flexDirection = 'column';
 
 displayContainer.style.margin = 'auto';
-displayContainer.style.height = '85px';
+displayContainer.style.display = 'flex';
+displayContainer.style.flexDirection = 'column';
+// displayContainer.style.height = '85px';
 
+displayCalc.style.display = 'inline-flex';
+displayCalc.style.flexWrap = 'wrap';
+displayCalc.style.alignItems = 'flex-end';
+displayCalc.style.margin = 'auto';
+displayCalc.style.width = '600px';
+displayCalc.style.height = '35px';
+displayCalc.style.padding = '5px 10px';
+displayCalc.style.fontSize = '16px';
+displayCalc.style.justifyContent = 'left'
+displayCalc.style.alignContent = 'left';
+displayCalc.style.backgroundColor = '#efefef';
 
 display.style.display = 'inline-flex';
 display.style.flexWrap = 'wrap';
@@ -76,6 +96,7 @@ display.style.fontSize = '36px';
 display.style.justifyContent = 'right'
 display.style.alignContent = 'right';
 display.style.backgroundColor = '#efefef';
+
 
 buttonsContainer.style.display = 'flex';
 buttonsContainer.style.width = '525px';
@@ -117,57 +138,85 @@ operandContainer.style.width = '150px';
     button.style.margin = 'auto 10px';
         
   };
+  /// Selected Buttons displayed
+const displayButtonNumbers = function () {
+ 
+ display.textContent = '';
+   for (let i = 0; i < numButtons.length; i++) {
+     const button = numButtons[i];
+     button.addEventListener('click', function () {
+       display.append(button.textContent);
+      
+      
+     })
+     
+   }
+   
+};
+displayButtonNumbers();
   
 
 const operatorButton = function () {
   for (let i = 0; i < operandButtons.length; i++ ) {
     const button = operandButtons[i];
+
     button.addEventListener('click', function () {
-      console.log(button.textContent);
-      console.log(display.textContent);
-    })
-    
-    
+      if(button.textContent === '.' && display.textContent === display.textContent.includes('.')){
+          display.textContent = '';
+           display.textContent = 'Only 1 decimal';
+        }
+      
+      if (button.textContent === 'C') {
+        display.textContent = '';
+        displayCalc.textContent = '';
+      } else if (button.textContent !== '' && button.textContent !== '=' && display.textContent !== '') {
+       
+        firstNum = parseFloat(display.textContent);
+        calcOperator = button.textContent;
+        displayCalc.append(`${firstNum} ${calcOperator}`);
+        display.textContent = '';
+        console.log(firstNum);
+        console.log(button.textContent);
+      }else if (button.textContent === '=' && firstNum !== 0){
+        secondNum = parseFloat(display.textContent);
+        let eQaul = button.textContent;
+        displayCalc.textContent += `${secondNum} ${eQaul}`;
+        display.textContent = '';
+        const answer = operate(calcOperator,firstNum,secondNum);
+        display.textContent = answer;
+        console.log(firstNum)
+        console.log(secondNum)
+        console.log(calcOperator)
+        console.log(answer)
+        
+      }else {
+        display.textContent = 'Something went wrong, hit "C" button and try again.';
+        return
+      }
+      
+    });
   }
 };
 operatorButton();
 
-/// Selected Buttons displayed
-const displayButtonNumbers = function () {
- 
-  display.textContent = '';
-    for (let i = 0; i < numButtons.length; i++) {
-      const button = numButtons[i];
-      button.addEventListener('click', function () {
-        display.append(button.textContent);
-       
-       
-      })
-      
-    }
-    
-};
-displayButtonNumbers();
 
 
 
 
-//Number and operators variable
-let firstNum = 0;
-let secondNum = 0;
-const calcOperator = ['+', '-', '/', '*'];
+
+
 
 const operate = function (operator, num1, num2) {
   switch(operator) {
     case '+':
-      return add([num1,num2]);
+      return add(num1,num2);
     case '-':
       return subtract(num1,num2);
     case '*':
       return multiply([num1,num2]);
     case '/':
       return divide(num1,num2);
-    case '**':
+    case '^':
       return power(num1,num2);
     default:
       return 'Invalid operator';
@@ -175,11 +224,8 @@ const operate = function (operator, num1, num2) {
 };
 
 //Addition  
-const add = function (arr) {
-  let num1 = arr.num1;
-  let num2 = arr.num2;
-  const added = arr.reduce((num1,num2 => num1 = num2));
-  return added;
+const add = function (num1, num2) {
+  return num1 + num2;
 }
 
 //subtraction
