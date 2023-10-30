@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculator Application</title>
     <style>
-      *{border: solid red 1px;}
      
+     body{
+      box-sizing: border-box;
+     }
     </style>
 </head>
 
@@ -38,7 +40,7 @@
           <button class="operators">*</button>
           <button class="operators">-</button>
           <button class="operators">+</button>
-          <button class="numbers">.</button>
+          <button class="operators">.</button>
           
         </div>
     </div>
@@ -99,10 +101,12 @@ display.style.backgroundColor = '#efefef';
 
 
 buttonsContainer.style.display = 'flex';
-buttonsContainer.style.width = '525px';
-buttonsContainer.style.padding = '10px 0px';
-buttonsContainer.style.margin = '40px auto';
+buttonsContainer.style.width = '600px';
+buttonsContainer.style.height = '700px';
+buttonsContainer.style.padding = '10px 10px';
+buttonsContainer.style.margin = 'auto';
 buttonsContainer.style.justifyContent = 'center';
+buttonsContainer.style.backgroundColor = '#555';
 
 
 ///Numbers Container
@@ -112,12 +116,13 @@ numberContainer.style.justifyContent = 'center';
 numberContainer.style.gap = '10px';
 numberContainer.style.flexDirection = 'row';
 numberContainer.style.alignItems = 'center';
-numberContainer.style.width = '300px';
+numberContainer.style.width = '400px';
+numberContainer.style.backgroundColor = '#555';
 
   for (let i = 0; i < numButtons.length; i++) {
     const button = numButtons[i];
-    button.style.width = '75px';
-    button.style.height = '75px';
+    button.style.width = '125px';
+    button.style.height = '125px';
     button.style.fontSize = '30px';
     
   };
@@ -128,14 +133,16 @@ operandContainer.style.flexDirection = 'column-reverse';
 operandContainer.style.justifyContent = 'flex-end';
 operandContainer.style.alignItems = 'flex-start';
 operandContainer.style.gap = '10px';
-operandContainer.style.width = '150px';
+operandContainer.style.backgroundColor = '#555';
+operandContainer.style.width = '200px';
   //Button creation
   for (let i = 0; i < operandButtons.length; i++) {
     const button = operandButtons[i];
-    button.style.width = '59px';
-    button.style.height = '59px';
+    button.style.width = '125px';
+    button.style.height = '125px';
     button.style.fontSize= '30px';
     button.style.margin = 'auto 10px';
+    button.style.backgroundColor = "green";
         
   };
   /// Selected Buttons displayed
